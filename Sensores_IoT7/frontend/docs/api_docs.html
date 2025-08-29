@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentação da API - Sistema IoT Resiliente</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Documentação da API - Sistema IoT Resiliente</h1>
+        <p>Esta API permite a integração entre as camadas Fog e Cloud do sistema IoT, fornecendo endpoints para transmissão de dados, monitoramento e análise preditiva.</p>
+        
+        <h2>Autenticação</h2>
+        <p>Todas as requisições, exceto login, devem incluir um token JWT no header <code>Authorization: Bearer &lt;token&gt;</code>.</p>
+        
+        <div class="endpoint">
+            <h3><span class="method post">POST</span> /api/login</h3>
+            <p>Autentica usuários e retorna token JWT.</p>
+            <p><strong>Autenticação:</strong> Basic Auth (username e password)</p>
+            <p><strong>Parâmetros:</strong> Nenhum no corpo, usar HTTP Basic Auth</p>
+            <p><strong>Resposta de sucesso:</strong></p>
+            <pre>{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}</pre>
+        </div>
+        
+        <h2>Endpoints de Dados</h2>
+        
+        <div class="endpoint">
+            <h3><span class="method post">POST</span> /api/data</h3>
+            <p>Envia dados dos sensores para a nuvem.</p>
+            <p><strong>Headers:</strong> Authorization: Bearer &lt;token&gt;</p>
+            <p><strong>Corpo da requisição (JSON):</strong></p>
+            <pre>{
+    "avg_temperature": 32.5,
+    "avg_vibration": 2.1,
+    "presence_count": 3
+}</pre>
+            <p><strong>Resposta de sucesso:</strong></p>
+            <pre>{
+    "status": "success",
+    "message": "Dados recebidos"
+}</pre>
+        </div>
+        
+        <div class="endpoint">
+            <h3><span class="method get">GET</span> /api/history</h3>
+            <p>Recupera histórico de dados dos sensores.</p>
+            <p><strong>Headers:</strong> Authorization: Bearer &lt;token&gt;</p>
+            <p><strong>Parâmetros de consulta:</strong> limit (opcional, padrão: 50)</p>
+            <p><strong>Resposta de sucesso:</strong></p>
+            <pre>[
+    {
+        "avg_temperature": 32.5,
+        "timestamp": "2023-10-25T14:30:00.000Z",
+        "node": "fog_node"
+    },
+    ...
+]</pre>
+        </div>
+        
+        <div class="endpoint">
+            <h3><span class="method get">GET</span> /api/alerts</h3>
+            <p>Recupera histórico de alertas do sistema.</p>
+            <p><strong>Headers:</strong> Authorization: Bearer &lt;token&gt;</p>
+            <p><strong>Parâmetros de consulta:</strong> limit (opcional, padrão: 10)</p>
+            <p><strong>Resposta de sucesso:</strong></p>
+            <pre>[
+    {
+        "type": "high_temperature",
+        "message": "Temperatura crítica detectada: 39.2°C",
+        "timestamp": "2023-10-25T14:30:00.000Z",
+        "severity": "high"
+    },
+    ...
+]</pre>
+        </div>
+        
+        <h2>Endpoints de Análise Preditiva</h2>
+        
+        <div class="endpoint">
+            <h3><span class="method get">GET</span> /api/predict/temperature</h3>
+            <p>Obtém previsão de temperatura para os próximos períodos.</p>
+            <p><strong>Headers:</strong> Authorization: Bearer &lt;token&gt;</p>
+            <p><strong>Resposta de sucesso:</strong></p>
+            <pre>{
+    "predictions": [35.2, 36.1, 37.0],
+    "overheating_risk": true,
+    "timestamp": "2023-10-25T14:30:00.000Z"
+}</pre>
+        </div>
+        
+        <div class="endpoint">
+            <h3><span class="method get">GET</span> /api/status</h3>
+            <p>Obtém status atual do sistema.</p>
+            <p><strong>Headers:</strong> Authorization: Bearer &lt;token&gt;</p>
+            <p><strong>Resposta de sucesso:</strong></p>
+            <pre>{
+    "status": "operational",
+    "data_points": 85,
+    "alerts": 3,
+    "last_update": "2023-10-25T14:30:00.000Z",
+    "current_temperature": 35.2
+}</pre>
+        </div>
+        
+        <h2>Exemplo de Uso</h2>
+        <p>Para usar a API, primeiro faça autenticação:</p>
+        <pre>curl -u fog_node:fog_password_123 http://localhost:5000/api/login</pre>
+        
+        <p>Em seguida, use o token retornado para acessar endpoints protegidos:</p>
+        <pre>curl -H "Authorization: Bearer &lt;token&gt;" http://localhost:5000/api/history?limit=5</pre>
+        
+        <p>Para enviar dados:</p>
+        <pre>curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer &lt;token&gt;" \
+-d '{"avg_temperature": 32.5, "avg_vibration": 2.1, "presence_count": 3}' \
+http://localhost:5000/api/data</pre>
+    </div>
+</body>
+</html>

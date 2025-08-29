@@ -1,0 +1,47 @@
+   body { 
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #1a1717;
+            color: #ffffff;
+        }
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background: #0095ff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #ffffff;
+        }
+        .endpoint {
+            background: #014f86;
+            border-left: 4px solid #007bff;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        code {
+            background: #1a1717;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        pre {
+            background: #1a1717;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .method {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 3px;
+            color: white;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .get { background: #28a745; }
+        .post { background: #007bff; }
